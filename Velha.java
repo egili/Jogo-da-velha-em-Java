@@ -34,10 +34,8 @@ public class Velha {
 
                 analista = new AnalistaSituacional(tabDoJogo);
 
-                // Define quem faz o primeiro movimento
                 jogador = jogadorHumanoComeca ? jogadorH : jogadorA;
 
-                // Loop das jogadas
                 do {
                     jogador.facaSuaJogada();
 
@@ -48,7 +46,6 @@ public class Velha {
                         
                 } while (!analista.fimDeJogo());
 
-                // Verifica o vencedor
                 if (analista.getMarcaDoVencedor() != null) {
                     if (analista.getMarcaDoVencedor().equals(jogadorH.getMarca())) {
                         jogadorH.vcGanhou();
@@ -59,7 +56,6 @@ public class Velha {
                     jogadorH.deuVelha();
                 }
 
-                // Alterna quem começa a próxima partida
                 jogadorHumanoComeca = !jogadorHumanoComeca;
                 
             } catch (Exception e) {
