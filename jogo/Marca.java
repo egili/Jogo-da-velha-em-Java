@@ -6,15 +6,16 @@ public class Marca
 
     public Marca (char smb) throws Exception
     {
-        // validar smb, garantindo que ele
-        // seja 'X' ou 'O' e coloca-lo em
-        // simbolo
-        // dar excecao em caso de valor invalido
+        char maiusculo = Character.toUpperCase(smb);
+        if (maiusculo != 'X' && maiusculo != 'O')
+            throw new Exception("Símbolo inválido. Deve ser 'X' ou 'O'.");
+        
+        this.simbolo = maiusculo;
     }
 
     public char getSimbolo ()
     {
-        // retornar simbolo
+        return this.simbolo;
     }
 
     @Override
@@ -26,12 +27,25 @@ public class Marca
     @Override
     public boolean equals (Object obj)
     {
-        // retornar true se this for igual a obj ou false caso contrario
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (this.getClass() != obj.getClass())
+            return false;
+            
+        Marca outraMarca = (Marca) obj;
+        if (this.simbolo != outraMarca.simbolo)
+            return false;
+            
+        return true;
     }
 
     @Override
     public int hashCode ()
     {
-        // faça
+        int ret = 1;
+        ret = 31 * ret + Character.hashCode(this.simbolo);
+        return ret < 0 ? -ret : ret;
     }
 }
