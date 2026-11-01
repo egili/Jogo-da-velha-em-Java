@@ -1,9 +1,8 @@
 package jogador;
 
 import jogo.Marca;
-import jogo.Tabuleiro;
 
-public interface Jogador
-{
-    // faça
+public interface Jogador {
+    Marca getMarca();
+    void facaSuaJogada();
 }
