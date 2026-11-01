@@ -8,8 +8,8 @@ public class Marca
     {
         char maiusculo = Character.toUpperCase(smb);
         if (maiusculo != 'X' && maiusculo != 'O')
-            throw new Exception("Símbolo inválido. Deve ser 'X' ou 'O'.");
-        
+            throw new Exception ("Marca inválida");
+
         this.simbolo = maiusculo;
     }
 
@@ -33,11 +33,11 @@ public class Marca
             return false;
         if (this.getClass() != obj.getClass())
             return false;
-            
+
         Marca outraMarca = (Marca) obj;
         if (this.simbolo != outraMarca.simbolo)
             return false;
-            
+
         return true;
     }
 
@@ -45,7 +45,11 @@ public class Marca
     public int hashCode ()
     {
         int ret = 1;
-        ret = 31 * ret + Character.hashCode(this.simbolo);
-        return ret < 0 ? -ret : ret;
+
+        ret = ret*2 + ((Character)this.simbolo).hashCode();
+
+        if (ret<0) ret=-ret;
+
+        return ret;
     }
 }

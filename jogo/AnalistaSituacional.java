@@ -7,8 +7,9 @@ public class AnalistaSituacional
     public AnalistaSituacional (Tabuleiro tab) throws Exception
     {
         if (tab == null)
-            throw new Exception("Tabuleiro ausente.");
-            
+            throw new Exception ("Tabuleiro ausente");
+
+        // guarda a referencia (sem clone), pois precisa analisar o tabuleiro do jogo
         this.tabDoJogo = tab;
     }
 
@@ -18,40 +19,40 @@ public class AnalistaSituacional
         {
             for (int i = 0; i < 3; i++)
             {
-                if (tabDoJogo.getMarcaNaPosicao(i, 0) != null &&
-                    tabDoJogo.getMarcaNaPosicao(i, 0).equals(tabDoJogo.getMarcaNaPosicao(i, 1)) &&
-                    tabDoJogo.getMarcaNaPosicao(i, 1).equals(tabDoJogo.getMarcaNaPosicao(i, 2)))
+                if (this.tabDoJogo.getMarcaNaPosicao(i, 0) != null &&
+                    this.tabDoJogo.getMarcaNaPosicao(i, 0).equals(this.tabDoJogo.getMarcaNaPosicao(i, 1)) &&
+                    this.tabDoJogo.getMarcaNaPosicao(i, 1).equals(this.tabDoJogo.getMarcaNaPosicao(i, 2)))
                 {
-                    return tabDoJogo.getMarcaNaPosicao(i, 0);
+                    return this.tabDoJogo.getMarcaNaPosicao(i, 0);
                 }
             }
 
             for (int j = 0; j < 3; j++)
             {
-                if (tabDoJogo.getMarcaNaPosicao(0, j) != null &&
-                    tabDoJogo.getMarcaNaPosicao(0, j).equals(tabDoJogo.getMarcaNaPosicao(1, j)) &&
-                    tabDoJogo.getMarcaNaPosicao(1, j).equals(tabDoJogo.getMarcaNaPosicao(2, j)))
+                if (this.tabDoJogo.getMarcaNaPosicao(0, j) != null &&
+                    this.tabDoJogo.getMarcaNaPosicao(0, j).equals(this.tabDoJogo.getMarcaNaPosicao(1, j)) &&
+                    this.tabDoJogo.getMarcaNaPosicao(1, j).equals(this.tabDoJogo.getMarcaNaPosicao(2, j)))
                 {
-                    return tabDoJogo.getMarcaNaPosicao(0, j);
+                    return this.tabDoJogo.getMarcaNaPosicao(0, j);
                 }
             }
 
-            if (tabDoJogo.getMarcaNaPosicao(0, 0) != null &&
-                tabDoJogo.getMarcaNaPosicao(0, 0).equals(tabDoJogo.getMarcaNaPosicao(1, 1)) &&
-                tabDoJogo.getMarcaNaPosicao(1, 1).equals(tabDoJogo.getMarcaNaPosicao(2, 2)))
+            if (this.tabDoJogo.getMarcaNaPosicao(0, 0) != null &&
+                this.tabDoJogo.getMarcaNaPosicao(0, 0).equals(this.tabDoJogo.getMarcaNaPosicao(1, 1)) &&
+                this.tabDoJogo.getMarcaNaPosicao(1, 1).equals(this.tabDoJogo.getMarcaNaPosicao(2, 2)))
             {
-                return tabDoJogo.getMarcaNaPosicao(0, 0);
+                return this.tabDoJogo.getMarcaNaPosicao(0, 0);
             }
 
-            if (tabDoJogo.getMarcaNaPosicao(0, 2) != null &&
-                tabDoJogo.getMarcaNaPosicao(0, 2).equals(tabDoJogo.getMarcaNaPosicao(1, 1)) &&
-                tabDoJogo.getMarcaNaPosicao(1, 1).equals(tabDoJogo.getMarcaNaPosicao(2, 0)))
+            if (this.tabDoJogo.getMarcaNaPosicao(0, 2) != null &&
+                this.tabDoJogo.getMarcaNaPosicao(0, 2).equals(this.tabDoJogo.getMarcaNaPosicao(1, 1)) &&
+                this.tabDoJogo.getMarcaNaPosicao(1, 1).equals(this.tabDoJogo.getMarcaNaPosicao(2, 0)))
             {
-                return tabDoJogo.getMarcaNaPosicao(0, 2);
+                return this.tabDoJogo.getMarcaNaPosicao(0, 2);
             }
         }
-        catch (Exception e)
-        {}
+        catch (Exception erro)
+        {} // sei que nao vai dar erro, pois so uso posicoes validas
 
         return null;
     }
@@ -61,36 +62,25 @@ public class AnalistaSituacional
         try
         {
             for (int i = 0; i < 3; i++)
-            {
                 for (int j = 0; j < 3; j++)
-                {
-                    if (!tabDoJogo.haMarcaNaPosicao(i, j))
+                    if (!this.tabDoJogo.haMarcaNaPosicao(i, j))
                         return false;
-                }
-            }
-            return true;
         }
-        catch (Exception e)
-        {
-            return false;
-        }
+        catch (Exception erro)
+        {} // sei que nao vai dar erro, pois so uso posicoes validas
+
+        return true;
     }
 
     public boolean fimDeJogo ()
     {
-        if (getMarcaDoVencedor() != null)
-            return true;
-            
-        if (tabuleiroCheio())
-            return true;
-            
-        return false;
+        return this.getMarcaDoVencedor() != null || this.tabuleiroCheio();
     }
 
     @Override
     public String toString ()
     {
-        return tabDoJogo.toString();
+        return this.tabDoJogo.toString();
     }
 
     @Override
@@ -114,7 +104,11 @@ public class AnalistaSituacional
     public int hashCode ()
     {
         int ret = 1;
-        ret = 31 * ret + (this.tabDoJogo == null ? 0 : this.tabDoJogo.hashCode());
-        return ret < 0 ? -ret : ret;
+
+        ret = ret*2 + this.tabDoJogo.hashCode();
+
+        if (ret<0) ret=-ret;
+
+        return ret;
     }
 }
