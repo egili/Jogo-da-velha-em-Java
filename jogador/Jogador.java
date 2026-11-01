@@ -2,7 +2,8 @@ package jogador;
 
 import jogo.Marca;
 
-public interface Jogador {
-    Marca getMarca();
-    void facaSuaJogada();
+public interface Jogador
+{
+    public Marca getMarca ();
+    public void facaSuaJogada ();
 }

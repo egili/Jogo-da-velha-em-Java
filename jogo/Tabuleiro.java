@@ -13,7 +13,7 @@ public class Tabuleiro implements Cloneable
     public boolean haMarcaNaPosicao (int lin, int col) throws Exception
     {
         if (lin < 0 || lin > 2 || col < 0 || col > 2)
-            throw new Exception("Posição inválida.");
+            throw new Exception ("Posição inválida");
 
         return this.matriz[lin][col] != null;
     }
@@ -21,7 +21,7 @@ public class Tabuleiro implements Cloneable
     public Marca getMarcaNaPosicao (int lin, int col) throws Exception
     {
         if (lin < 0 || lin > 2 || col < 0 || col > 2)
-            throw new Exception("Posição inválida.");
+            throw new Exception ("Posição inválida");
 
         return this.matriz[lin][col];
     }
@@ -29,11 +29,14 @@ public class Tabuleiro implements Cloneable
     public void setMarcaNaPosicao (Marca mrc, int lin, int col) throws Exception
     {
         if (lin < 0 || lin > 2 || col < 0 || col > 2)
-            throw new Exception("Posição inválida.");
+            throw new Exception ("Posição inválida");
         if (mrc == null)
-            throw new Exception("Marca nula.");
+            throw new Exception ("Marca ausente");
+        if (this.matriz[lin][col] != null)
+            throw new Exception ("Posição ocupada");
 
-        this.matriz[lin][col] = new Marca(mrc.getSimbolo());
+        // Marca e imutavel, entao nao precisa de copia
+        this.matriz[lin][col] = mrc;
     }
 
     @Override
@@ -54,7 +57,7 @@ public class Tabuleiro implements Cloneable
             }
             ret += "\n";
             if (i < 2)
-                ret += "-----------\n";
+                ret += "--+---+--\n";
         }
         return ret;
     }
@@ -87,36 +90,33 @@ public class Tabuleiro implements Cloneable
     public int hashCode ()
     {
         int ret = 1;
+
         for (int i = 0; i < 3; i++)
         {
             for (int j = 0; j < 3; j++)
             {
+                ret = ret*2;
                 if (this.matriz[i][j] != null)
-                    ret = 31 * ret + this.matriz[i][j].hashCode();
-                else
-                    ret = 31 * ret;
+                    ret = ret + this.matriz[i][j].hashCode();
             }
         }
-        return ret < 0 ? -ret : ret;
+
+        if (ret<0) ret=-ret;
+
+        return ret;
     }
 
     // construtor de copia
     public Tabuleiro (Tabuleiro modelo) throws Exception
     {
         if (modelo == null)
-            throw new Exception("Modelo ausente!");
+            throw new Exception ("Modelo ausente");
 
-        this.matriz = new Marca[3][3];
+        // matriz nova; as marcas podem ser compartilhadas, pois Marca e imutavel
+        this.matriz = new Marca [3][3];
         for (int i = 0; i < 3; i++)
-        {
             for (int j = 0; j < 3; j++)
-            {
-                if (modelo.matriz[i][j] != null)
-                    this.matriz[i][j] = new Marca(modelo.matriz[i][j].getSimbolo());
-                else
-                    this.matriz[i][j] = null;
-            }
-        }
+                this.matriz[i][j] = modelo.matriz[i][j];
     }
 
     @Override
@@ -125,10 +125,10 @@ public class Tabuleiro implements Cloneable
         Tabuleiro ret = null;
         try
         {
-            ret = new Tabuleiro(this);
+            ret = new Tabuleiro (this);
         }
-        catch (Exception e)
-        {}
+        catch (Exception erro)
+        {} // sei que nao vai dar erro, pois this nunca e null
         return ret;
     }
 }

@@ -2,67 +2,79 @@ import jogo.*;
 import jogador.*;
 import java.io.*;
 
-public class Velha {
-    public static void main(String args[]) {
-        Tabuleiro tabDoJogo;
+public class Velha
+{
+    public static void main (String args [])
+    {
+        Tabuleiro           tabDoJogo;
 
-        Jogador jogador = null;
-        JogadorHumano jogadorH = null;
-        JogadorAutomatico jogadorA = null;
+        Jogador             jogador  = null;
+        JogadorHumano       jogadorH = null;
+        JogadorAutomatico   jogadorA = null;
 
         AnalistaSituacional analista;
 
-        boolean jogadorHumanoComeca = (int) (Math.random() * 2) == 0;
+        boolean jogadorHumanoComeca = (int)(Math.random()*2) == 0;
 
-        do {
-            try {
-                tabDoJogo = new Tabuleiro();
+        do
+        {
+            try
+            {
+                tabDoJogo = new Tabuleiro ();
 
-                if (jogadorHumanoComeca) {
-                    jogadorH = new JogadorHumano(tabDoJogo);
-                    jogadorA = new JogadorAutomatico(
-                        tabDoJogo,
-                        new Marca(jogadorH.getMarca().getSimbolo() == 'X' ? 'O' : 'X')
-                    );
-                } else {
-                    jogadorA = new JogadorAutomatico(tabDoJogo);
-                    jogadorH = new JogadorHumano(
-                        tabDoJogo,
-                        new Marca(jogadorA.getMarca().getSimbolo() == 'X' ? 'O' : 'X')
-                    );
+                if (jogadorHumanoComeca)
+                {
+                    jogadorH = new JogadorHumano (tabDoJogo);
+                    jogadorA = new JogadorAutomatico
+                              (tabDoJogo,
+                               new Marca(jogadorH.getMarca().getSimbolo()=='X'?'O':'X'));
+                }
+                else
+                {
+                    jogadorA = new JogadorAutomatico (tabDoJogo);
+                    jogadorH = new JogadorHumano
+                              (tabDoJogo,
+                               new Marca(jogadorA.getMarca().getSimbolo()=='X'?'O':'X'));
                 }
 
-                analista = new AnalistaSituacional(tabDoJogo);
+                analista = new AnalistaSituacional (tabDoJogo);
 
-                jogador = jogadorHumanoComeca ? jogadorH : jogadorA;
+                if (jogadorHumanoComeca)
+                    jogador=jogadorH;
+                else
+                    jogador=jogadorA;
 
-                do {
+                do
+                {
                     jogador.facaSuaJogada();
 
-                    if (jogador == jogadorH)
-                        jogador = jogadorA;
+                    if (jogador==jogadorH)
+                        jogador=jogadorA;
                     else
-                        jogador = jogadorH;
-                        
-                } while (!analista.fimDeJogo());
-
-                if (analista.getMarcaDoVencedor() != null) {
-                    if (analista.getMarcaDoVencedor().equals(jogadorH.getMarca())) {
-                        jogadorH.vcGanhou();
-                    } else if (analista.getMarcaDoVencedor().equals(jogadorA.getMarca())) {
-                        jogadorH.vcPerdeu(); // Humano perdeu
-                    }
-                } else {
-                    jogadorH.deuVelha();
+                        jogador=jogadorH;
                 }
+                while (!analista.fimDeJogo());
+
+                System.out.println();
+                System.out.println(tabDoJogo);
+
+                // getMarcaDoVencedor() devolve null quando da velha; testar antes do equals
+                Marca vencedor = analista.getMarcaDoVencedor();
+                if (vencedor == null)
+                    jogadorH.deuVelha ();
+                else
+                    if (vencedor.equals(jogadorH.getMarca()))
+                        jogadorH.vcGanhou ();
+                    else
+                        jogadorH.vcPerdeu ();
 
                 jogadorHumanoComeca = !jogadorHumanoComeca;
-                
-            } catch (Exception e) {
-                System.err.println("Deu um erro inesperado: " + e.getMessage());
-                e.printStackTrace();
             }
-            
-        } while (jogadorH != null && jogadorH.querMaisUmaPartida());
+            catch (Exception erro)
+            {
+                System.err.println(erro.getMessage());
+            }
+        }
+        while (jogadorH != null && jogadorH.querMaisUmaPartida());
     }
 }
