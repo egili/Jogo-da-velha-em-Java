@@ -1,55 +1,56 @@
 package jogo;
 
-public class Marca
-{
+public class Marca {
+
     private char simbolo;
 
-    public Marca (char smb) throws Exception
-    {
+    public Marca(char smb) throws Exception {
+        
         char maiusculo = Character.toUpperCase(smb);
-        if (maiusculo != 'X' && maiusculo != 'O')
+
+        if (maiusculo != 'X' && maiusculo != 'O') {
             throw new Exception ("Marca inválida");
+        }
 
         this.simbolo = maiusculo;
     }
 
-    public char getSimbolo ()
-    {
+    public char getSimbolo() {
         return this.simbolo;
     }
 
     @Override
-    public String toString ()
-    {
-        return ""+simbolo;
+    public String toString() {
+        return "" + simbolo;
     }
 
     @Override
-    public boolean equals (Object obj)
-    {
-        if (this == obj)
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (this.getClass() != obj.getClass())
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
 
         Marca outraMarca = (Marca) obj;
-        if (this.simbolo != outraMarca.simbolo)
+        if (this.simbolo != outraMarca.simbolo) {
             return false;
-
+        }
         return true;
     }
 
     @Override
-    public int hashCode ()
-    {
+    public int hashCode() {
+
         int ret = 1;
 
-        ret = ret*2 + ((Character)this.simbolo).hashCode();
+        ret = ret * 2 + ((Character)this.simbolo).hashCode();
 
-        if (ret<0) ret=-ret;
-
-        return ret;
+        return ret < 0 ? -ret : ret;
     }
 }

@@ -3,185 +3,171 @@ package jogador;
 import jogo.Marca;
 import jogo.Tabuleiro;
 
-public class JogadorHumano implements Jogador, Cloneable
-{
+public class JogadorHumano implements Jogador, Cloneable {
+
     private Marca     marca     = null;
     private Tabuleiro tabDoJogo = null;
 
-    public JogadorHumano (Tabuleiro tab) throws Exception
-    {
-        if (tab == null)
-            throw new Exception ("Tabuleiro ausente");
+    public JogadorHumano(Tabuleiro tab) throws Exception {
 
-        // guarda a referencia (sem clone), pois precisa jogar no tabuleiro do jogo
+        if (tab == null) {
+            throw new Exception ("Tabuleiro ausente");
+        }
+
         this.tabDoJogo = tab;
 
-        while (this.marca == null)
-        {
+        while (this.marca == null) {
             System.out.print("Escolha sua marca (X ou O): ");
             String entrada = Teclado.getUmString();
-            if (entrada == null)
+
+            if (entrada == null) {
                 throw new Exception ("Entrada encerrada");
-
-            try
-            {
-                if (entrada.trim().length() != 1)
-                    throw new Exception ("Marca inválida");
-
-                this.marca = new Marca (entrada.trim().charAt(0));
             }
-            catch (Exception erro)
-            {
+
+            try {
+                if (entrada.trim().length() != 1) {
+                    throw new Exception ("Marca inválida");
+                }
+                this.marca = new Marca (entrada.trim().charAt(0));
+            } catch (Exception erro) {
                 System.err.println(erro.getMessage());
             }
         }
     }
 
-    public JogadorHumano (Tabuleiro tab, Marca mrc) throws Exception
-    {
-        if (tab == null)
+    public JogadorHumano(Tabuleiro tab, Marca mrc) throws Exception {
+        
+        if (tab == null) {
             throw new Exception ("Tabuleiro ausente");
-        if (mrc == null)
+        }
+        if (mrc == null) {
             throw new Exception ("Marca ausente");
+        }
 
         this.tabDoJogo = tab;
-        this.marca     = mrc; // Marca e imutavel, entao nao precisa de copia
+        this.marca     = mrc; 
     }
 
-    public Marca getMarca ()
-    {
+    public Marca getMarca() {
         return this.marca;
     }
 
-    public void facaSuaJogada ()
-    {
+    public void facaSuaJogada() {
+
         System.out.println();
         System.out.println(this.tabDoJogo);
 
         boolean jogou = false;
-        while (!jogou)
-        {
-            try
-            {
+        while (!jogou) {
+            try {
                 System.out.print("Sua vez (" + this.marca + ")! Digite a linha (0-2): ");
                 String lin = Teclado.getUmString();
 
                 System.out.print("Digite a coluna (0-2): ");
                 String col = Teclado.getUmString();
 
-                if (lin == null || col == null) // fim da entrada: nao ha como continuar a partida
+                if (lin == null || col == null) {
                     System.exit(0);
+                }
 
-                this.tabDoJogo.setMarcaNaPosicao(this.marca,
-                                                 Integer.parseInt(lin.trim()),
-                                                 Integer.parseInt(col.trim()));
+                this.tabDoJogo.setMarcaNaPosicao(this.marca, Integer.parseInt(lin.trim()), Integer.parseInt(col.trim()));
                 jogou = true;
-            }
-            catch (NumberFormatException erro)
-            {
+            } catch (NumberFormatException erro) {
                 System.err.println("Digite um número entre 0 e 2");
-            }
-            catch (Exception erro)
-            {
+            } catch (Exception erro) {
                 System.err.println(erro.getMessage());
             }
         }
     }
 
-    public void vcGanhou ()
-    {
+    public void vcGanhou() {
         System.out.println("Parabéns! Você ganhou!");
     }
 
-    public void vcPerdeu ()
-    {
+    public void vcPerdeu() {
         System.out.println("Que pena! Você perdeu!");
     }
 
-    public void deuVelha ()
-    {
+    public void deuVelha() {
         System.out.println("Deu velha! Ninguém ganhou.");
     }
 
-    public boolean querMaisUmaPartida ()
-    {
-        for (;;)
-        {
+    public boolean querMaisUmaPartida () {
+        for (;;) {
             System.out.print("Quer jogar de novo? (S/N): ");
 
             String resposta = Teclado.getUmString();
 
-            if (resposta == null)
+            if (resposta == null) {
                 return false;
+            }
 
             resposta = resposta.trim().toUpperCase();
-            if (resposta.equals("S"))
-                return true;
-            if (resposta.equals("N"))
-                return false;
+
+            return resposta.equals("S") ? true : resposta.equals("N") ? false : false;
 
             System.err.println("Resposta inválida");
         }
     }
 
     @Override
-    public String toString ()
-    {
+    public String toString() {
         return "Jogador Humano [Marca: " + this.marca + "]";
     }
 
     @Override
-    public boolean equals (Object obj)
-    {
-        if (this == obj)
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (this.getClass() != obj.getClass())
+        }
+        if (this.getClass() != obj.getClass()) {
             return false;
+        }
 
         JogadorHumano outro = (JogadorHumano) obj;
-        if (!this.marca.equals(outro.marca))
+        if (!this.marca.equals(outro.marca)) {
             return false;
-        if (!this.tabDoJogo.equals(outro.tabDoJogo))
+        }
+        if (!this.tabDoJogo.equals(outro.tabDoJogo)) {
             return false;
+        }
 
         return true;
     }
 
     @Override
-    public int hashCode ()
-    {
+    public int hashCode() {
+
         int ret = 1;
 
-        ret = ret*2 + this.marca    .hashCode();
-        ret = ret*2 + this.tabDoJogo.hashCode();
+        ret = ret * 2 + this.marca.hashCode();
+        ret = ret * 2 + this.tabDoJogo.hashCode();
 
-        if (ret<0) ret=-ret;
-
-        return ret;
+        return ret < 0 ? -ret : ret;
     }
 
-    // construtor de cópia
-    public JogadorHumano (JogadorHumano modelo) throws Exception
-    {
-        if (modelo == null)
+    public JogadorHumano(JogadorHumano modelo) throws Exception {
+        
+        if (modelo == null) {
             throw new Exception ("Modelo ausente");
+        }
 
-        this.marca     = modelo.marca;     // Marca e imutavel
-        this.tabDoJogo = modelo.tabDoJogo; // de proposito sem clone: a copia joga no mesmo tabuleiro
+        this.marca     = modelo.marca;
+        this.tabDoJogo = modelo.tabDoJogo;
     }
 
     @Override
-    public Object clone ()
-    {
+    public Object clone() {
+        
         JogadorHumano ret = null;
-        try
-        {
+        try {
             ret = new JogadorHumano (this);
-        }
-        catch (Exception erro)
-        {} // sei que nao vai dar erro, pois this nunca e null
+        } catch (Exception erro)
+        {} 
         return ret;
     }
 }
