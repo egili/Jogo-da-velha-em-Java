@@ -14,13 +14,13 @@ git clone https://github.com/egili/Jogo-da-velha-em-Java.git
 cd Jogo-da-velha-em-Java
 
 # compila tudo para a pasta out/
-javac -d out Velha.java jogo/*.java jogador/*.java
+javac -d out src/Velha.java src/jogo/*.java src/jogador/*.java
 
 # executa
 java -cp out Velha
 ```
 
-Os arquivos `.class` são ignorados pelo Git (`.gitignore`). Se preferir compilar na própria pasta, basta `javac Velha.java` seguido de `java Velha` — o `javac` resolve os pacotes `jogo` e `jogador` automaticamente a partir dos imports.
+Os arquivos `.class` são ignorados pelo Git (`.gitignore`). Se preferir compilar dentro de `src/`, basta `cd src`, `javac Velha.java` e `java Velha`. O `javac` encontra os pacotes `jogo` e `jogador` sozinho a partir dos imports.
 
 ## Como jogar
 
@@ -74,16 +74,18 @@ Quer jogar de novo? (S/N): n
 
 ```
 .
-├── Velha.java                  # ponto de entrada (main) e loop das partidas
-├── jogo/                       # modelo e regras
-│   ├── Marca.java              # símbolo X ou O (validado e normalizado para maiúscula)
-│   ├── Tabuleiro.java          # matriz 3x3 de Marca, com validação de posição
-│   └── AnalistaSituacional.java# detecta vencedor e fim de jogo
-└── jogador/                    # participantes
-    ├── Jogador.java            # interface comum
-    ├── JogadorHumano.java      # lê jogadas do teclado
-    ├── JogadorAutomatico.java  # jogador controlado pelo computador
-    └── Teclado.java            # utilitário de leitura do stdin
+├── README.md
+└── src/
+    ├── Velha.java                   # ponto de entrada (main) e loop das partidas
+    ├── jogo/                        # modelo e regras
+    │   ├── Marca.java               # símbolo X ou O (validado e normalizado para maiúscula)
+    │   ├── Tabuleiro.java           # matriz 3x3 de Marca, com validação de posição
+    │   └── AnalistaSituacional.java # detecta vencedor e fim de jogo
+    └── jogador/                     # participantes
+        ├── Jogador.java             # interface comum
+        ├── JogadorHumano.java       # lê jogadas do teclado
+        ├── JogadorAutomatico.java   # jogador controlado pelo computador
+        └── Teclado.java             # utilitário de leitura do stdin
 ```
 
 ## Arquitetura
