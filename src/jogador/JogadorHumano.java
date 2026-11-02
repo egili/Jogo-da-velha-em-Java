@@ -104,7 +104,9 @@ public class JogadorHumano implements Jogador, Cloneable {
 
             resposta = resposta.trim().toUpperCase();
 
-            return resposta.equals("S") ? true : resposta.equals("N") ? false : false;
+            if (resposta.equals("S") || resposta.equals("N")) {
+                return resposta.equals("S") ? true : false;
+            }
 
             System.err.println("Resposta inválida");
         }
